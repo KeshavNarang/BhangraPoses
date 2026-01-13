@@ -1,27 +1,40 @@
-import os
 from flask import Flask, request, send_file, send_from_directory
-from backend.align_video import main
-from flask_cors import CORS
 import tempfile
+import os
+from backend.align_video import main  # your existing align_video.py
+from flask_cors import CORS
 
-# Paths relative to app.py in repo root
+# -----------------------------
+# Flask setup
+# -----------------------------
 frontend_path = os.path.join(os.path.dirname(__file__), "frontend")
 REFERENCE_FOLDER = os.path.join(os.path.dirname(__file__), "references")
 
 app = Flask(__name__, static_folder=frontend_path, static_url_path="")
 CORS(app)
 
-# Serve homepage
+# -----------------------------
+# Serve frontend
+# -----------------------------
 @app.route("/")
 def index():
     return send_from_directory(app.static_folder, "index.html")
 
-# Serve JS/CSS
 @app.route("/<path:path>")
-def static_files(path):
+def serve_static(path):
+    """Serve JS, CSS, or other frontend static files"""
     return send_from_directory(app.static_folder, path)
 
-# Video alignment endpoint
+# -----------------------------
+# Serve reference videos
+# -----------------------------
+@app.route("/references/<path:filename>")
+def reference_files(filename):
+    return send_from_directory(REFERENCE_FOLDER, filename)
+
+# -----------------------------
+# Align video endpoint
+# -----------------------------
 @app.route("/align", methods=["POST"])
 def align_video_endpoint():
     if "video" not in request.files:
@@ -43,6 +56,9 @@ def align_video_endpoint():
 
         return send_file(output_path, mimetype="video/mp4")
 
+# -----------------------------
+# Run Flask
+# -----------------------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
