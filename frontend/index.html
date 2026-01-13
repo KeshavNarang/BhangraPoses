@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bhangra Pose Estimation</title>
+
+  <!-- MediaPipe -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<h2>Bhangra Pose Estimation</h2>
+
+<div class="controls">
+  <input type="file" id="userVideoInput" accept="video/*">
+  <button id="uploadVideo">Upload Video</button>
+
+  <!-- Reference selection dropdown -->
+  <select id="referenceSelect">
+    <option value="jhoomar.mp4">Jhoomar</option>
+    <option value="khunde.mp4">Khunde</option>
+    <option value="dhamaal.mp4">Dhamaal</option>
+    <option value="phummania.mp4">Phummania</option>
+  </select>
+
+  <button id="autoAlign" class="primary">Auto-align</button>
+  <span id="alignStatus" class="status">
+    <span class="spinner hidden"></span>
+    <span class="check hidden">✅</span>
+  </span>
+
+  <div style="margin-top: 14px;">
+    <button id="playBoth">Play / Pause</button>
+    <button id="restartBoth">Restart</button>
+  </div>
+</div>
+
+<div class="note">
+  <strong>Auto-align</strong> is the computer’s best attempt to match the starting
+  audio of the practice video with the reference video.
+</div>
+
+<div class="container">
+  <div class="video-block">
+    <div class="video-wrapper">
+      <video id="video1"></video>
+      <canvas id="canvas1"></canvas>
+    </div>
+    <div class="label">Reference</div>
+  </div>
+
+  <div class="video-block">
+    <div class="video-wrapper">
+      <video id="video2"></video>
+      <canvas id="canvas2"></canvas>
+    </div>
+    <div class="label">Practice</div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
