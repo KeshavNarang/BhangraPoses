@@ -12,6 +12,13 @@ CORS(app)
 # Path to reference videos
 REFERENCE_FOLDER = os.path.join(os.path.dirname(__file__), "..", "references")
 
+@app.route("/test")
+def test():
+    import os
+    frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
+    index_exists = os.path.exists(os.path.join(frontend_path, "index.html"))
+    return f"Frontend folder: {frontend_path}<br>index.html exists? {index_exists}"
+
 # Serve the main page
 @app.route("/")
 def index():
