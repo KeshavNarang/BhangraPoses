@@ -6,3 +6,4 @@ soundfile
 flask-cors
 moviepy>=2.0.0
 imageio-ffmpeg
+gunicorn
