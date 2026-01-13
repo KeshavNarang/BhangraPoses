@@ -4,16 +4,25 @@ import os
 from align_video import main
 from flask_cors import CORS
 
-# Serve static frontend files
-app = Flask(__name__, static_folder="../frontend", static_url_path="")
+# Path to your static frontend folder
+frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
+app = Flask(__name__, static_folder=frontend_path, static_url_path="")
 CORS(app)
 
+# Path to reference videos
 REFERENCE_FOLDER = os.path.join(os.path.dirname(__file__), "..", "references")
 
+# Serve the main page
 @app.route("/")
 def index():
     return send_from_directory(app.static_folder, "index.html")
 
+# Serve other static files (JS, CSS)
+@app.route("/<path:path>")
+def static_files(path):
+    return send_from_directory(app.static_folder, path)
+
+# Endpoint to align video
 @app.route("/align", methods=["POST"])
 def align_video_endpoint():
     if "video" not in request.files:
@@ -35,6 +44,7 @@ def align_video_endpoint():
 
         return send_file(output_path, mimetype="video/mp4")
 
+# Run Flask on Railway
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5500))
+    port = int(os.environ.get("PORT", 5000))  # Railway sets this automatically
     app.run(host="0.0.0.0", port=port)
