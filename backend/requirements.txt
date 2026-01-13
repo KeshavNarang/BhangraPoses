@@ -4,4 +4,4 @@ scipy
 librosa
 soundfile
 flask-cors
-moviepy
+moviepy==2.0.1
