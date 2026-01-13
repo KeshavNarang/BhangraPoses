@@ -27,7 +27,7 @@ fileInput.onchange = () => {
 function updateReferenceVideo() {
   video1.pause();
   video1.currentTime = 0;
-  video1.src = `../references/${referenceSelect.value}`;
+  video1.src = `/references/${referenceSelect.value}`;  // <-- updated path
   video1.load();
 }
 
@@ -52,8 +52,16 @@ function setupPose(video, canvas, color) {
   video.onloadedmetadata = () => resizeCanvasToVideo(video, canvas);
   window.addEventListener("resize", () => resizeCanvasToVideo(video, canvas));
 
-  const pose = new Pose({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}` });
-  pose.setOptions({ modelComplexity: 1, smoothLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
+  const pose = new Pose({
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
+  });
+
+  pose.setOptions({
+    modelComplexity: 1,
+    smoothLandmarks: true,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
+  });
 
   pose.onResults((results) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -115,10 +123,11 @@ autoAlignBtn.onclick = async () => {
   const file = fileInput.files[0];
   const formData = new FormData();
   formData.append("video", file);
-  formData.append("reference", referenceSelect.value); // reference filename sent to backend
+  formData.append("reference", referenceSelect.value);
 
   try {
-    const response = await fetch("http://127.0.0.1:5500/align", { method: "POST", body: formData });
+    // <-- use relative path for backend
+    const response = await fetch("/align", { method: "POST", body: formData });
     if (!response.ok) throw new Error(`Server returned ${response.status}`);
 
     const blob = await response.blob();
