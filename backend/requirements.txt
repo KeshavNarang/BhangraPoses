@@ -5,6 +5,6 @@ librosa==0.10.1
 soundfile==0.12.1
 flask-cors==3.0.10
 moviepy==1.0.3
-imageio-ffmpeg==0.4.10
+imageio-ffmpeg==0.5.1
 tqdm==4.65.0
 decorator==5.1.1
