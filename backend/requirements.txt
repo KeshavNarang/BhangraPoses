@@ -7,4 +7,3 @@ flask-cors==3.0.10
 moviepy==1.0.3
 imageio-ffmpeg==0.5.1
 tqdm==4.65.0
-decorator==5.1.1
